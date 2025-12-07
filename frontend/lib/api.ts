@@ -49,10 +49,17 @@ export async function authenticatedFetch(
 ): Promise<Response> {
   const token = getAccessToken();
 
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    ...options.headers,
   };
+
+  // Merge existing headers if any
+  if (options.headers) {
+    const existingHeaders = new Headers(options.headers);
+    existingHeaders.forEach((value, key) => {
+      headers[key] = value;
+    });
+  }
 
   // Add authorization header if user is logged in
   if (token) {

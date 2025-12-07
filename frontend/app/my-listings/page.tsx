@@ -4,7 +4,7 @@ import Link from "next/link";
 import TopNavbar from "../components/top-navbar";
 import BookListingCard, { type BookListing } from "../components/book-listing-card";
 import { BookListingSkeleton } from "../components/LoadingSkeleton";
-import { apiGet, apiDelete, handleApiError, getCurrentUser } from "@/lib/api";
+import { apiGet, apiDelete, handleApiError } from "@/lib/api";
 
 
 export default function MyListingsPage() {
@@ -12,49 +12,26 @@ export default function MyListingsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<number | string | null>(null);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
 
-  // Get current user's email on mount
+  // Fetch listings on mount
   useEffect(() => {
-    async function fetchCurrentUser() {
-      try {
-        const user = await getCurrentUser();
-        if (user?.email) {
-          setUserEmail(user.email);
-        }
-      } catch (error) {
-        console.error("Failed to get current user:", error);
-      }
-    }
-    fetchCurrentUser();
+    fetchListings();
   }, []);
 
-  useEffect(() => {
-    if (userEmail) {
-      fetchListings();
-    }
-  }, [userEmail]);
-
   const fetchListings = async () => {
-    if (!userEmail) return;
-
     try {
       setLoading(true);
       setError(null);
 
-      // Use authenticated API call
-      const response = await apiGet("/books/");
+      // Use dedicated backend endpoint that filters server-side
+      const response = await apiGet("/books/my-listings");
 
       if (!response.ok) {
         await handleApiError(response);
       }
 
       const data = await response.json();
-      // CRITICAL FIX #2: Filter to show only current user's listings
-      const userListings = Array.isArray(data)
-        ? data.filter((listing: BookListing) => listing.seller_email === userEmail)
-        : [];
-      setListings(userListings);
+      setListings(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -67,17 +44,10 @@ export default function MyListingsPage() {
       return;
     }
 
-    // Verify ownership before deleting
-    const listing = listings.find(l => l.id === id);
-    if (listing && listing.seller_email !== userEmail) {
-      alert("You can only delete your own listings");
-      return;
-    }
-
     try {
       setDeletingId(id);
 
-      // Use authenticated API call
+      // Backend verifies ownership automatically
       const response = await apiDelete(`/books/${id}`);
 
       if (!response.ok) {

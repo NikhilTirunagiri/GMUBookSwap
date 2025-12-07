@@ -49,18 +49,30 @@ class BookCreate(BaseModel):
 
 
 @router.get("/")
-def get_books(current_user: dict = Depends(get_optional_user)):
+def get_books(
+    seller_email: Optional[str] = None,
+    current_user: dict = Depends(get_optional_user)
+):
     """
     Get all available books from the database.
     Authentication optional.
 
+    Query Parameters:
+        seller_email: Filter books by seller email (optional)
+
     Returns:
-        list: All book listings
+        list: All book listings (or filtered by seller_email)
     """
     try:
         # Query the books table from Supabase
         # Order by creation date, newest first
-        response = supabase.table("books").select("*").order("created_at", desc=True).execute()
+        query = supabase.table("books").select("*")
+
+        # Filter by seller_email if provided
+        if seller_email:
+            query = query.eq("seller_email", seller_email)
+
+        response = query.order("created_at", desc=True).execute()
 
         if not response.data:
             return []
@@ -69,6 +81,36 @@ def get_books(current_user: dict = Depends(get_optional_user)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching books: {str(e)}")
+
+
+@router.get("/my-listings")
+def get_my_listings(current_user: dict = Depends(get_current_user)):
+    """
+    Get all listings for the currently authenticated user.
+    Requires authentication.
+
+    Returns:
+        list: User's book listings
+    """
+    try:
+        user_email = current_user["email"]
+
+        # Query only the current user's listings
+        response = (
+            supabase.table("books")
+            .select("*")
+            .eq("seller_email", user_email)
+            .order("created_at", desc=True)
+            .execute()
+        )
+
+        if not response.data:
+            return []
+
+        return response.data
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching your listings: {str(e)}")
 
 
 @router.get("/{book_id}")

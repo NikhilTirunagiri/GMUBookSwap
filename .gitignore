@@ -45,3 +45,4 @@ backend/supabase/__pycache__
 backend/supabase/utils/__pycache__/
 backend/supabase/prod-ca-2021.crt
 backend/supabase/routers/__pycache__/
+.env.local
