@@ -1,0 +1,20 @@
+supabase
+fastapi
+uvicorn
+
+# JWT handling
+PyJWT
+
+# Environment variables
+python-dotenv
+
+# Data validation and serialization
+pydantic
+
+# HTTP security
+python-multipart
+
+# Optional: Development dependencies
+# pytest
+# pytest-asyncio
+# httpx

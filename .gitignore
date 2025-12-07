@@ -1,0 +1,47 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Backend files that we won't be tracking for backend
+backend/.venv
+backend/supabase/.env
+backend/supabase/.venv
+
+
+
+# We won't tracking the following files for frontend
+# dependencies
+frontend/node_modules
+frontend/.pnp
+frontend/.pnp.*
+frontend/.yarn/*
+frontend/!.yarn/patches
+frontend/!.yarn/plugins
+frontend/!.yarn/releases
+frontend/!.yarn/versions
+
+# testing
+frontend/coverage
+
+# next.js
+frontend/.next/
+frontend/out/
+# production
+frontend/build
+# misc
+frontend/.DS_Store
+frontend/*.pem
+# debug
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+# env files (can opt-in for committing if needed)
+frontend/.env*
+# vercel
+frontend/.vercel
+# typescript
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+backend/supabase/__pycache__
+backend/supabase/utils/__pycache__/
+backend/supabase/prod-ca-2021.crt
+backend/supabase/routers/__pycache__/
