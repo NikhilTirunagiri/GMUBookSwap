@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
+}
+
+.auth-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #00471B, #002D11);
+  color: #fff;
+}
+
+.auth-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-bottom: 0.0625rem solid #FFD700;
+}
+
+.brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #FFD700;
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #FFD700;
+  margin-bottom: 1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 18.75rem;
+}
+
+input {
+  margin: 0.5rem 0;
+  padding: 0.6rem;
+  border-radius: 0.375rem;
+  border: 0.125rem solid #FFD700;
+  background-color: #fff;
+  color: #003300;
+}
+
+input:focus {
+  outline: none;
+  border-color: #e6c200;
+}
+
+button {
+  background-color: #FFD700;
+  color: #003300;
+  border: none;
+  padding: 0.7rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+button:hover {
+  background-color: #e6c200;
+}
+
+.message {
+  margin-top: 0.8rem;
+  color: #ffb347;
+}
+
+a {
+  color: #FFD700;
+}
+
+.logo {
+  width: 3.75rem;
+  height: 3.75rem;
+  display: block;
+  margin-right: 0.625rem;
+}
